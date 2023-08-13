@@ -390,7 +390,7 @@ def start_console_server(host, port, interpreter):
         server.register_function(interpreter.enableGui)
 
         if port == 0:
-            (h, port) = server.socket.getsockname()
+            (h, port) = server.socket.getsockname()[:2]
 
             print(port)
             print(interpreter.client_port)

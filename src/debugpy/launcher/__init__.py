@@ -22,8 +22,15 @@ def connect(host, port):
     assert adapter_host is None
 
     log.info("Connecting to adapter at {0}:{1}", host, port)
-
-    sock = sockets.create_client()
+    def is_ipv6_address(address):
+        import socket
+        try:
+            socket.inet_pton(socket.AF_INET6, address)
+            return True
+        except socket.error:
+            return False
+    
+    sock = sockets.create_client(is_ipv6_address(host))
     sock.connect((host, port))
     adapter_host = host
 

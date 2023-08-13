@@ -18,9 +18,15 @@ def create_server(host, port=0, backlog=socket.SOMAXCONN, timeout=None):
         host = "127.0.0.1"
     if port is None:
         port = 0
+    def is_ipv6_address(address):
+        try:
+            socket.inet_pton(socket.AF_INET6, address)
+            return True
+        except socket.error:
+            return False
 
     try:
-        server = _new_sock()
+        server = _new_sock(is_ipv6_address(host))
         if port != 0:
             # If binding to a specific port, make sure that the user doesn't have
             # to wait until the OS times out the socket to be able to use that port
@@ -42,13 +48,16 @@ def create_server(host, port=0, backlog=socket.SOMAXCONN, timeout=None):
     return server
 
 
-def create_client():
+def create_client(is_ipv6=False):
     """Return a client socket that may be connected to a remote address."""
-    return _new_sock()
+    return _new_sock(is_ipv6)
 
 
-def _new_sock():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+def _new_sock(is_ipv6 = False):
+    if is_ipv6:
+        sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+    else:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
 
     # Set TCP keepalive on an open socket.
     # It activates after 1 second (TCP_KEEPIDLE,) of idleness,
@@ -102,22 +111,22 @@ def serve(name, handler, host, port=0, backlog=socket.SOMAXCONN, timeout=None):
         log.reraise_exception(
             "Error listening for incoming {0} connections on {1}:{2}:", name, host, port
         )
-    host, port = listener.getsockname()
+    host, port = listener.getsockname()[:2]
     log.info("Listening for incoming {0} connections on {1}:{2}...", name, host, port)
 
     def accept_worker():
         while True:
+            log.info(f"enter accept_worker for {host} : {port}")
             try:
-                sock, (other_host, other_port) = listener.accept()
+                sock, client_address = listener.accept()
             except (OSError, socket.error):
                 # Listener socket has been closed.
+                log.info("# Listener socket has been closed.")
                 break
-
+            except Exception:
+                log.info(f"{host} : {port} {Exception}")
             log.info(
-                "Accepted incoming {0} connection from {1}:{2}.",
-                name,
-                other_host,
-                other_port,
+                f"{host} : {port}Accepted incoming {name} connection from {client_address}."
             )
             handler(sock)
 

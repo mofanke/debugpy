@@ -48,7 +48,7 @@ def get_socket_names(n_sockets, close=False):
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             sock.bind((get_localhost(), 0))
-            socket_name = sock.getsockname()
+            socket_name = sock.getsockname()[:2]
 
         sockets.append(sock)
         socket_names.append(socket_name)

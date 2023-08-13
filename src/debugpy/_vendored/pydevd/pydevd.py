@@ -1456,7 +1456,7 @@ class PyDB(object):
             port = SetupHolder.setup['port']
 
             self._server_socket = create_server_socket(host=host, port=port)
-            self.py_db._server_socket_name = self._server_socket.getsockname()
+            self.py_db._server_socket_name = self._server_socket.getsockname()[:2]
             self.py_db.set_server_socket_ready()
 
             while not self._kill_received:

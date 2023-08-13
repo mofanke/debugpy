@@ -101,9 +101,11 @@ def set_address(mode):
 
         # It's either host:port, or just port.
         value = next(it)
-        host, sep, port = value.partition(":")
-        if not sep:
-            host = "127.0.0.1"
+        host, port = value.rsplit(":", 1)
+        if ":" in value:
+            host, port = value.rsplit(":", 1)
+        else:
+            host = "::1"  # IPv6 loopback address
             port = value
         try:
             port = int(port)
