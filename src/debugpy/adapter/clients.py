@@ -483,7 +483,7 @@ class Client(components.Component):
         else:
             if not servers.is_serving():
                 servers.serve()
-            host, port = servers.listener.getsockname()
+            host, port = servers.listener.getsockname()[:2]
 
         # There are four distinct possibilities here.
         #
@@ -736,7 +736,7 @@ class Client(components.Component):
             body["connect"]["host"] = host if host is not None else "127.0.0.1"
         if "port" not in body["connect"]:
             if port is None:
-                _, port = listener.getsockname()
+                _, port = listener.getsockname()[:2]
             body["connect"]["port"] = port
 
         if self.capabilities["supportsStartDebuggingRequest"]:
@@ -752,7 +752,7 @@ class Client(components.Component):
 def serve(host, port):
     global listener
     listener = sockets.serve("Client", Client, host, port)
-    return listener.getsockname()
+    return listener.getsockname()[:2]
 
 
 def stop_serving():

@@ -428,7 +428,14 @@ class WriterThread(PyDBDaemonThread):
 
 def create_server_socket(host, port):
     try:
-        server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
+        if not host:
+            host = "127.0.0.1"
+        data = socket_module.getaddrinfo(HOST, PORT, socket.AF_UNSPEC,
+                              socket.SOCK_STREAM, 0, socket.AI_PASSIVE)[0]
+
+        af, socktype, proto, canonname, sa = data
+        server = socket(af, socktype, proto)
+        # server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
         if IS_WINDOWS and not IS_JYTHON:
             server.setsockopt(SOL_SOCKET, SO_EXCLUSIVEADDRUSE, 1)
         elif not IS_WASM:
@@ -462,9 +469,17 @@ def start_server(port):
 def start_client(host, port):
     ''' connects to a host/port '''
     pydev_log.info("Connecting to %s:%s", host, port)
-
-    s = socket(AF_INET, SOCK_STREAM)
-
+    def is_ipv6_address(address):
+        try:
+            socket_module.inet_pton(socket_module.AF_INET6, address)
+            return True
+        except socket_module.error:
+            return False
+    if is_ipv6_address(host):
+        s = socket(socket_module.AF_INET6, SOCK_STREAM)
+    else:
+        s = socket(AF_INET, SOCK_STREAM)
+    
     #  Set TCP keepalive on an open socket.
     #  It activates after 1 second (TCP_KEEPIDLE,) of idleness,
     #  then sends a keepalive ping once every 3 seconds (TCP_KEEPINTVL),

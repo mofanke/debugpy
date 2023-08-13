@@ -174,7 +174,7 @@ def listen(address, settrace_kwargs, in_process_debug_adapter=False):
         raise RuntimeError("can't listen for adapter endpoints: " + str(exc))
 
     try:
-        endpoints_host, endpoints_port = endpoints_listener.getsockname()
+        endpoints_host, endpoints_port = endpoints_listener.getsockname()[:2]
         log.info(
             "Waiting for adapter endpoints on {0}:{1}...",
             endpoints_host,
