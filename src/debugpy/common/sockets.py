@@ -18,9 +18,15 @@ def create_server(host, port=0, backlog=socket.SOMAXCONN, timeout=None):
         host = "127.0.0.1"
     if port is None:
         port = 0
+    def is_ipv6_address(address):
+        try:
+            socket.inet_pton(socket.AF_INET6, address)
+            return True
+        except socket.error:
+            return False
 
     try:
-        server = _new_sock()
+        server = _new_sock(is_ipv6_address(host))
         if port != 0:
             # If binding to a specific port, make sure that the user doesn't have
             # to wait until the OS times out the socket to be able to use that port
