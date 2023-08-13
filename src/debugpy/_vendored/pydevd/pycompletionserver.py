@@ -172,7 +172,7 @@ class CompletionServer:
     def connect_to_server(self):
         from _pydev_bundle._pydev_saved_modules import socket
 
-        self.socket = s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket = s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
         try:
             s.connect((HOST, self.port))
         except:

@@ -81,7 +81,7 @@ def main(args):
             sock = sockets.create_client()
             try:
                 sock.settimeout(None)
-                sock.connect(("127.0.0.1", args.for_server))
+                sock.connect(("::1", args.for_server))
                 sock_io = sock.makefile("wb", 0)
                 try:
                     sock_io.write(json.dumps(endpoints).encode("utf-8"))
@@ -152,7 +152,7 @@ def _parse_argv(argv):
     parser.add_argument(
         "--host",
         type=str,
-        default="127.0.0.1",
+        default="::1",
         metavar="HOST",
         help="start the adapter in debugServer mode on the specified host",
     )

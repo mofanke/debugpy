@@ -98,8 +98,8 @@ def listen(
     incoming socket connections from clients on the specified address.
 
     `__endpoint` must be either a (host, port) tuple as defined by the
-    standard `socket` module for the `AF_INET` address family, or a port
-    number. If only the port is specified, host is "127.0.0.1".
+    standard `socket` module for the `AF_INET6` address family, or a port
+    number. If only the port is specified, host is "::1".
 
     `in_process_debug_adapter`: by default a separate python process is
     spawned and used to communicate with the client as the debug adapter.
@@ -125,8 +125,8 @@ def connect(__endpoint: Endpoint | int, *, access_token: str | None = None) -> E
     specified address to debug this process.
 
     `__endpoint` must be either a (host, port) tuple as defined by the
-    standard `socket` module for the `AF_INET` address family, or a port
-    number. If only the port is specified, host is "127.0.0.1".
+    standard `socket` module for the `AF_INET6` address family, or a port
+    number. If only the port is specified, host is "::1".
 
     `access_token` must be the same value that was passed to the adapter
     via the `--server-access-token` command-line switch.

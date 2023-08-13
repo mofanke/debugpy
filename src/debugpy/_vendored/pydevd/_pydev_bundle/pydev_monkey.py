@@ -541,7 +541,7 @@ def patch_args(args, is_exec=False):
 
         # Original args should be something as:
         # ['X:\\pysrc\\pydevd.py', '--multiprocess', '--print-in-debugger-startup',
-        #  '--vm_type', 'python', '--client', '127.0.0.1', '--port', '56352', '--file', 'x:\\snippet1.py']
+        #  '--vm_type', 'python', '--client', '::1', '--port', '56352', '--file', 'x:\\snippet1.py']
         from _pydevd_bundle.pydevd_command_line_handling import setup_to_argv
         new_args = []
         new_args.extend(unquoted_args[:first_non_vm_index])

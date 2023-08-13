@@ -111,7 +111,7 @@ def _starts_debugging(func):
             _, port = address
         except Exception:
             port = address
-            address = ("127.0.0.1", port)
+            address = ("::1", port)
         try:
             port.__index__()  # ensure it's int-like
         except Exception:
@@ -168,7 +168,7 @@ def listen(address, settrace_kwargs, in_process_debug_adapter=False):
     server_access_token = codecs.encode(os.urandom(32), "hex").decode("ascii")
 
     try:
-        endpoints_listener = sockets.create_server("127.0.0.1", 0, timeout=10)
+        endpoints_listener = sockets.create_server("::1", 0, timeout=10)
     except Exception as exc:
         log.swallow_exception("Can't listen for adapter endpoints:")
         raise RuntimeError("can't listen for adapter endpoints: " + str(exc))

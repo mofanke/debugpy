@@ -402,7 +402,7 @@ class Client(components.Component):
             self._forward_terminate_request = on_terminate == "KeyboardInterrupt"
 
         launcher_path = request("debugLauncherPath", os.path.dirname(launcher.__file__))
-        adapter_host = request("debugAdapterHost", "127.0.0.1")
+        adapter_host = request("debugAdapterHost", "::1")
 
         try:
             servers.serve(adapter_host)
@@ -475,7 +475,7 @@ class Client(components.Component):
                 raise request.isnt_valid(
                     'Multiple concurrent "listen" sessions are not supported'
                 )
-            host = listen("host", "127.0.0.1")
+            host = listen("host", "::1")
             port = listen("port", int)
             adapter.access_token = None
             self.restart_requested = request("restart", False)
@@ -733,7 +733,7 @@ class Client(components.Component):
         if "connect" not in body:
             body["connect"] = {}
         if "host" not in body["connect"]:
-            body["connect"]["host"] = host if host is not None else "127.0.0.1"
+            body["connect"]["host"] = host if host is not None else "::1"
         if "port" not in body["connect"]:
             if port is None:
                 _, port = listener.getsockname()[:2]

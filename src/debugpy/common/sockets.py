@@ -15,7 +15,7 @@ def create_server(host, port=0, backlog=socket.SOMAXCONN, timeout=None):
 
     assert backlog > 0
     if host is None:
-        host = "127.0.0.1"
+        host = "::1"
     if port is None:
         port = 0
     def is_ipv6_address(address):
@@ -57,7 +57,7 @@ def _new_sock(is_ipv6 = False):
     if is_ipv6:
         sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM, socket.IPPROTO_TCP)
     else:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+        sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM, socket.IPPROTO_TCP)
 
     # Set TCP keepalive on an open socket.
     # It activates after 1 second (TCP_KEEPIDLE,) of idleness,

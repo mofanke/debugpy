@@ -40,7 +40,7 @@ def main():
     adapter = launcher_argv[0]
     host, sep, port = adapter.partition(":")
     if not sep:
-        host = "127.0.0.1"
+        host = "::1"
         port = adapter
     port = int(port)
 

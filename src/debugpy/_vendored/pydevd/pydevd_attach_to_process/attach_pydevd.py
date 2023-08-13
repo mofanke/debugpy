@@ -6,7 +6,7 @@ def process_command_line(argv):
     setup = {}
     setup['port'] = 5678  # Default port for PyDev remote debugger
     setup['pid'] = 0
-    setup['host'] = '127.0.0.1'
+    setup['host'] = '::1'
     setup['protocol'] = ''
     setup['debug-mode'] = ''
 

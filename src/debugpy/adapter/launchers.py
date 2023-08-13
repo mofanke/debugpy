@@ -106,7 +106,7 @@ def spawn_debuggee(
         launcher_host, launcher_port = listener.getsockname()[:2]
         launcher_addr = (
             launcher_port
-            if launcher_host == "127.0.0.1"
+            if launcher_host == "::1"
             else f"{launcher_host}:{launcher_port}"
         )
         cmdline += [str(launcher_addr), "--"]

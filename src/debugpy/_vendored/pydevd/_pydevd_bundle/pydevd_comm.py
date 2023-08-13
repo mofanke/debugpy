@@ -112,8 +112,8 @@ from io import StringIO
 from _pydevd_bundle.pydevd_comm_constants import *  # @UnusedWildImport
 
 # Socket import aliases:
-AF_INET, SOCK_STREAM, SHUT_WR, SOL_SOCKET, IPPROTO_TCP, socket = (
-    socket_module.AF_INET,
+AF_INET6, SOCK_STREAM, SHUT_WR, SOL_SOCKET, IPPROTO_TCP, socket = (
+    socket_module.AF_INET6,
     socket_module.SOCK_STREAM,
     socket_module.SHUT_WR,
     socket_module.SOL_SOCKET,
@@ -429,13 +429,13 @@ class WriterThread(PyDBDaemonThread):
 def create_server_socket(host, port):
     try:
         if not host:
-            host = "127.0.0.1"
+            host = "::1"
         data = socket_module.getaddrinfo(HOST, PORT, socket.AF_UNSPEC,
                               socket.SOCK_STREAM, 0, socket.AI_PASSIVE)[0]
 
         af, socktype, proto, canonname, sa = data
         server = socket(af, socktype, proto)
-        # server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
+        # server = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)
         if IS_WINDOWS and not IS_JYTHON:
             server.setsockopt(SOL_SOCKET, SO_EXCLUSIVEADDRUSE, 1)
         elif not IS_WASM:
@@ -478,7 +478,7 @@ def start_client(host, port):
     if is_ipv6_address(host):
         s = socket(socket_module.AF_INET6, SOCK_STREAM)
     else:
-        s = socket(AF_INET, SOCK_STREAM)
+        s = socket(AF_INET6, SOCK_STREAM)
     
     #  Set TCP keepalive on an open socket.
     #  It activates after 1 second (TCP_KEEPIDLE,) of idleness,

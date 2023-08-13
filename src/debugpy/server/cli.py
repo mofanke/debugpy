@@ -116,6 +116,7 @@ def set_address(mode):
 
         options.mode = mode
         options.address = (host, port)
+        print(119, "cli", options.mode, options.address)
 
     return do
 

@@ -391,7 +391,7 @@ class Server(components.Component):
         super().disconnect()
 
 
-def serve(host="127.0.0.1", port=0):
+def serve(host="::1", port=0):
     global listener
     listener = sockets.serve("Server", Connection, host, port)
     return listener.getsockname()[:2]
